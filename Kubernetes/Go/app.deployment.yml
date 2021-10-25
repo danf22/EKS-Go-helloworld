@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    flux.weave.works/automated: "true"
+  name: webapp
+spec:
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+        - name: webapp
+          image:  249652974127.dkr.ecr.us-east-1.amazonaws.com/helloworld:latest
+          imagePullPolicy: "Always"
+          ports:
+          - containerPort: 8000
+            name: http
+          resources:
+            limits:
+              cpu: 200m
+              memory: 300Mi
+            requests:
+              cpu: 200m
+              memory: 300Mi
