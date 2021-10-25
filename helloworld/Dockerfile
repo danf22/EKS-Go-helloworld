@@ -1,4 +1,4 @@
-FROM golang:latest
+FROM go-bullseye
 WORKDIR /app
 COPY . .
 RUN go build -o main .
