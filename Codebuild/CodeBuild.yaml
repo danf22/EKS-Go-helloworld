@@ -57,12 +57,12 @@ Resources:
                         on-failure: CONTINUE
                         commands:
                            - cd Kubernetes
-                           - kubectl create -f Go/
-                          # - command
-                      post_build:
-                        on-failure: ABORT
-                        commands:
                            - kubectl rollout restart -f Go/app.deployment.yml
+                          # - command
+                      #post_build:
+                       #on-failure: ABORT
+                        #commands:
+                          # - kubectl rollout restart -f Go/app.deployment.yml
                           # - command
                     #reports:
                       #report-name-or-arn:
