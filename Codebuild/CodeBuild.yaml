@@ -7,10 +7,10 @@ Resources:
         Type: "AWS::CodeBuild::Project"
         Properties:
             Name: "Deploy-eks"
-            Source: 
+            Source:
                 BuildSpec: |
                     version: 0.2
-                    
+
                     #env:
                       #variables:
                          # key: "value"
@@ -34,7 +34,7 @@ Resources:
                       install:
                         commands:
                           - echo Installing app dependencies...
-                          - curl -o kubectl https://storage.googleapis.com/kubernetes-release/release/v1.22.0/bin/linux/amd64/kubectl   
+                          - curl -o kubectl https://storage.googleapis.com/kubernetes-release/release/v1.22.0/bin/linux/amd64/kubectl
                           - chmod +x ./kubectl
                           - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
                           - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
@@ -48,14 +48,15 @@ Resources:
                           - echo Logging in to Amazon EKS...
                           - aws configure set aws_access_key_id $aws_access_key_id
                           - aws configure set aws_secret_access_key $aws_secret_access_key
-                          - aws configure set region $AWS_DEFAULT_REGION 
+                          - aws configure set region $AWS_DEFAULT_REGION
                           - aws sts get-caller-identity
-                          - aws eks update-kubeconfig --name $AWS_CLUSTER_NAME --region $AWS_DEFAULT_REGION 
+                          - aws eks update-kubeconfig --name $AWS_CLUSTER_NAME --region $AWS_DEFAULT_REGION
                           - kubectl config view --minify
                           - kubectl get svc
                       build:
                         commands:
                            - cd Kubernetes
+                           - kubectl create -f Go/
                            - kubectl rollout restart -f Go/app.deployment.yml
                           # - command
                       #post_build:
@@ -82,32 +83,32 @@ Resources:
                         # - paths
                 InsecureSsl: false
                 Type: "CODEPIPELINE"
-            Artifacts: 
+            Artifacts:
                 EncryptionDisabled: false
                 Name: "Deploy-eks"
                 Packaging: "NONE"
                 Type: "CODEPIPELINE"
-            Cache: 
+            Cache:
                 Type: "NO_CACHE"
-            Environment: 
+            Environment:
                 ComputeType: "BUILD_GENERAL1_SMALL"
-                EnvironmentVariables: 
-                  - 
+                EnvironmentVariables:
+                  -
                     Name: "AWS_DEFAULT_REGION"
                     Type: "PLAINTEXT"
                     Value: !Ref AWS::Region
-                  - 
+                  -
                     Name: "AWS_CLUSTER_NAME"
                     Type: "PLAINTEXT"
                     Value: "Go"
-                  - 
+                  -
                     Name: "aws_access_key_id"
                     Type: "PLAINTEXT"
                     Value: "********"
-                  - 
+                  -
                     Name: "aws_secret_access_key"
                     Type: "PLAINTEXT"
-                    Value: "**********"
+                    Value: "********"
                 Image: "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
                 ImagePullCredentialsType: "CODEBUILD"
                 PrivilegedMode: true
@@ -117,10 +118,10 @@ Resources:
             QueuedTimeoutInMinutes: 480
             EncryptionKey: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/s3"
             BadgeEnabled: false
-            LogsConfig: 
-                CloudWatchLogs: 
+            LogsConfig:
+                CloudWatchLogs:
                     Status: "ENABLED"
-                S3Logs: 
+                S3Logs:
                     Status: "DISABLED"
                     EncryptionDisabled: false
             Visibility: "PRIVATE"
@@ -129,10 +130,10 @@ Resources:
         Type: "AWS::CodeBuild::Project"
         Properties:
             Name: "Build"
-            Source: 
+            Source:
                 BuildSpec: !Sub |
                     version: 0.2
-                    
+
                     #env:
                       #variables:
                          # key: "value"
@@ -198,24 +199,24 @@ Resources:
                         # - paths
                 InsecureSsl: false
                 Type: "CODEPIPELINE"
-            Artifacts: 
+            Artifacts:
                 EncryptionDisabled: false
                 Name: "Build"
                 Packaging: "NONE"
                 Type: "CODEPIPELINE"
-            Cache: 
+            Cache:
                 Type: "NO_CACHE"
-            Environment: 
+            Environment:
                 ComputeType: "BUILD_GENERAL1_SMALL"
-                EnvironmentVariables: 
-                  - 
+                EnvironmentVariables:
+                  -
                     Name: "dockerhub_username"
                     Type: "PLAINTEXT"
-                    Value: "******"
-                  - 
+                    Value: "********"
+                  -
                     Name: "dockerhub_password"
                     Type: "PLAINTEXT"
-                    Value: "******"
+                    Value: "********"
                 Image: "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
                 ImagePullCredentialsType: "CODEBUILD"
                 PrivilegedMode: true
@@ -225,10 +226,10 @@ Resources:
             QueuedTimeoutInMinutes: 480
             EncryptionKey: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/s3"
             BadgeEnabled: false
-            LogsConfig: 
-                CloudWatchLogs: 
+            LogsConfig:
+                CloudWatchLogs:
                     Status: "ENABLED"
-                S3Logs: 
+                S3Logs:
                     Status: "DISABLED"
                     EncryptionDisabled: false
             Visibility: "PRIVATE"
