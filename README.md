@@ -64,6 +64,12 @@ OAuthToken of your Github repository.
  OAuthToken: "******"
  Owner: "******"
 ```
+replace "*****" Codepipeline/Codepipeline.yaml with your 
+S3 Codepipeline.
+```sh
+ codepipeline-${AWS::Region}-*****
+```
+
 ### Deploy IAM roles
 Deploy the IAM Role using cloud formation and CLI.
 
