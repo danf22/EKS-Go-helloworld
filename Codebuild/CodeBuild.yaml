@@ -1,6 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Metadata:
-    Generator: "former2"
+    Generator: "Prueba"
 Description: ""
 Resources:
     CodeBuildProject:
