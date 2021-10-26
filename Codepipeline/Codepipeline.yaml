@@ -1,0 +1,74 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+    Generator: "former2"
+Description: ""
+Resources:
+    CodePipelinePipeline:
+        Type: "AWS::CodePipeline::Pipeline"
+        Properties:
+            Name: "Go-helloworld"
+            RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/service-role/AWSCodePipelineServiceRole-${AWS::Region}-Go-helloworld"
+            ArtifactStore:
+                Location: !Sub "codepipeline-${AWS::Region}-3707790"
+                Type: "S3"
+            Stages:
+              -
+                Name: "Source"
+                Actions:
+                  -
+                    Name: "Source"
+                    ActionTypeId:
+                        Category: "Source"
+                        Owner: "ThirdParty"
+                        Provider: "GitHub"
+                        Version: "1"
+                    Configuration:
+                        Branch: "master"
+                        OAuthToken: "******"
+                        Owner: "******"
+                        PollForSourceChanges: "true"
+                        Repo: "EKS-Go-helloworld"
+                    OutputArtifacts:
+                      -
+                        Name: "SourceArtifact"
+                    Region: !Ref AWS::Region
+                    Namespace: "SourceVariables"
+                    RunOrder: 1
+              -
+                Name: "Build"
+                Actions:
+                  -
+                    Name: "Build"
+                    ActionTypeId:
+                        Category: "Build"
+                        Owner: "AWS"
+                        Provider: "CodeBuild"
+                        Version: "1"
+                    Configuration:
+                        ProjectName: "Build"
+                    InputArtifacts:
+                      -
+                        Name: "SourceArtifact"
+                    OutputArtifacts:
+                      -
+                        Name: "BuildArtifact"
+                    Region: !Ref AWS::Region
+                    Namespace: "BuildVariables"
+                    RunOrder: 1
+              -
+                Name: "Deploy"
+                Actions:
+                  -
+                    Name: "Deploy"
+                    ActionTypeId:
+                        Category: "Build"
+                        Owner: "AWS"
+                        Provider: "CodeBuild"
+                        Version: "1"
+                    Configuration:
+                        ProjectName: "Deploy-eks"
+                    InputArtifacts:
+                      -
+                        Name: "SourceArtifact"
+                    Region: !Ref AWS::Region
+                    RunOrder: 1
