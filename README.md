@@ -98,3 +98,6 @@ Get service Information of EKS:
 ```sh
 $ kubectl get svc
 ```
+This show the ELB information
+![alt text](https://github.com/danf22/EKS-Go-helloworld/blob/master/ELB.PNG)
+
