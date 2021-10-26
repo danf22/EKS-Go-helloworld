@@ -1,0 +1,234 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Metadata:
+    Generator: "former2"
+Description: ""
+Resources:
+    CodeBuildProject:
+        Type: "AWS::CodeBuild::Project"
+        Properties:
+            Name: "Deploy-eks"
+            Source: 
+                BuildSpec: |
+                    version: 0.2
+                    
+                    #env:
+                      #variables:
+                         # key: "value"
+                         # key: "value"
+                      #parameter-store:
+                         # key: "value"
+                         # key: "value"
+                      #secrets-manager:
+                         # key: secret-id:json-key:version-stage:version-id
+                         # key: secret-id:json-key:version-stage:version-id
+                      #exported-variables:
+                         # - variable
+                         # - variable
+                      #git-credential-helper: yes
+                    #batch:
+                      #fast-fail: true
+                      #build-list:
+                      #build-matrix:
+                      #build-graph:
+                    phases:
+                      install:
+                        commands:
+                          - echo Installing app dependencies...
+                          - curl -o kubectl https://storage.googleapis.com/kubernetes-release/release/v1.22.0/bin/linux/amd64/kubectl   
+                          - chmod +x ./kubectl
+                          - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+                          - echo 'export PATH=$PATH:$HOME/bin' >> ~/.bashrc
+                          - source ~/.bashrc
+                        #commands:
+                          # - command
+                          # - command
+                      pre_build:
+                        commands:
+                          - echo Entered the pre_build phase...
+                          - echo Logging in to Amazon EKS...
+                          - aws configure set aws_access_key_id $aws_access_key_id
+                          - aws configure set aws_secret_access_key $aws_secret_access_key
+                          - aws configure set region $AWS_DEFAULT_REGION 
+                          - aws sts get-caller-identity
+                          - aws eks update-kubeconfig --name $AWS_CLUSTER_NAME --region $AWS_DEFAULT_REGION 
+                          - kubectl config view --minify
+                          - kubectl get svc
+                      build:
+                        commands:
+                           - cd Kubernetes
+                           - kubectl rollout restart -f Go/app.deployment.yml
+                          # - command
+                      #post_build:
+                        #commands:
+                          # - command
+                          # - command
+                    #reports:
+                      #report-name-or-arn:
+                        #files:
+                          # - location
+                          # - location
+                        #base-directory: location
+                        #discard-paths: yes
+                        #file-format: JunitXml | CucumberJson
+                    #artifacts:
+                      #files:
+                        # - location
+                        # - location
+                      #name: $(date +%Y-%m-%d)
+                      #discard-paths: yes
+                      #base-directory: location
+                    #cache:
+                      #paths:
+                        # - paths
+                InsecureSsl: false
+                Type: "CODEPIPELINE"
+            Artifacts: 
+                EncryptionDisabled: false
+                Name: "Deploy-eks"
+                Packaging: "NONE"
+                Type: "CODEPIPELINE"
+            Cache: 
+                Type: "NO_CACHE"
+            Environment: 
+                ComputeType: "BUILD_GENERAL1_SMALL"
+                EnvironmentVariables: 
+                  - 
+                    Name: "AWS_DEFAULT_REGION"
+                    Type: "PLAINTEXT"
+                    Value: !Ref AWS::Region
+                  - 
+                    Name: "AWS_CLUSTER_NAME"
+                    Type: "PLAINTEXT"
+                    Value: "Go"
+                  - 
+                    Name: "aws_access_key_id"
+                    Type: "PLAINTEXT"
+                    Value: "********"
+                  - 
+                    Name: "aws_secret_access_key"
+                    Type: "PLAINTEXT"
+                    Value: "**********"
+                Image: "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+                ImagePullCredentialsType: "CODEBUILD"
+                PrivilegedMode: true
+                Type: "LINUX_CONTAINER"
+            ServiceRole: !Sub "arn:aws:iam::${AWS::AccountId}:role/service-role/codebuild-Deploy-eks-service-role"
+            TimeoutInMinutes: 60
+            QueuedTimeoutInMinutes: 480
+            EncryptionKey: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/s3"
+            BadgeEnabled: false
+            LogsConfig: 
+                CloudWatchLogs: 
+                    Status: "ENABLED"
+                S3Logs: 
+                    Status: "DISABLED"
+                    EncryptionDisabled: false
+            Visibility: "PRIVATE"
+
+    CodeBuildProject2:
+        Type: "AWS::CodeBuild::Project"
+        Properties:
+            Name: "Build"
+            Source: 
+                BuildSpec: !Sub |
+                    version: 0.2
+                    
+                    #env:
+                      #variables:
+                         # key: "value"
+                         # key: "value"
+                      #parameter-store:
+                         # key: "value"
+                         # key: "value"
+                      #secrets-manager:
+                         # key: secret-id:json-key:version-stage:version-id
+                         # key: secret-id:json-key:version-stage:version-id
+                      #exported-variables:
+                         # - variable
+                         # - variable
+                      #git-credential-helper: yes
+                    #batch:
+                      #fast-fail: true
+                      #build-list:
+                      #build-matrix:
+                      #build-graph:
+                    phases:
+                      #install:
+                        #If you use the Ubuntu standard image 2.0 or later, you must specify runtime-versions.
+                        #If you specify runtime-versions and use an image other than Ubuntu standard image 2.0, the build fails.
+                        #runtime-versions:
+                          # name: version
+                          # name: version
+                        #commands:
+                          # - command
+                          # - command
+                      #pre_build:
+                        #commands:
+                          # - command
+                          # - command
+                      build:
+                        commands:
+                           - docker login -u $dockerhub_username -p $dockerhub_password
+                           - aws ecr get-login-password --region ${AWS::Region} | docker login --username AWS --password-stdin ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com
+                           - cd helloworld
+                           - docker build -t helloworld .
+                           - docker tag helloworld:latest ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/helloworld:latest
+                           - docker push ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/helloworld:latest
+                      #post_build:
+                        #commands:
+                          # - command
+                          # - command
+                    #reports:
+                      #report-name-or-arn:
+                        #files:
+                          # - location
+                          # - location
+                        #base-directory: location
+                        #discard-paths: yes
+                        #file-format: JunitXml | CucumberJson
+                    #artifacts:
+                      #files:
+                        # - location
+                        # - location
+                      #name: $(date +%Y-%m-%d)
+                      #discard-paths: yes
+                      #base-directory: location
+                    #cache:
+                      #paths:
+                        # - paths
+                InsecureSsl: false
+                Type: "CODEPIPELINE"
+            Artifacts: 
+                EncryptionDisabled: false
+                Name: "Build"
+                Packaging: "NONE"
+                Type: "CODEPIPELINE"
+            Cache: 
+                Type: "NO_CACHE"
+            Environment: 
+                ComputeType: "BUILD_GENERAL1_SMALL"
+                EnvironmentVariables: 
+                  - 
+                    Name: "dockerhub_username"
+                    Type: "PLAINTEXT"
+                    Value: "******"
+                  - 
+                    Name: "dockerhub_password"
+                    Type: "PLAINTEXT"
+                    Value: "******"
+                Image: "aws/codebuild/amazonlinux2-x86_64-standard:3.0"
+                ImagePullCredentialsType: "CODEBUILD"
+                PrivilegedMode: true
+                Type: "LINUX_CONTAINER"
+            ServiceRole: !Sub "arn:aws:iam::${AWS::AccountId}:role/service-role/codebuild-Build-service-role"
+            TimeoutInMinutes: 60
+            QueuedTimeoutInMinutes: 480
+            EncryptionKey: !Sub "arn:aws:kms:${AWS::Region}:${AWS::AccountId}:alias/aws/s3"
+            BadgeEnabled: false
+            LogsConfig: 
+                CloudWatchLogs: 
+                    Status: "ENABLED"
+                S3Logs: 
+                    Status: "DISABLED"
+                    EncryptionDisabled: false
+            Visibility: "PRIVATE"
