@@ -88,3 +88,13 @@ $ aws cloudformation deploy --template-file Codebuild/CodeBuild.yaml--stack-name
 These commands will create the Codepipeline.
 
 ![alt text](https://github.com/danf22/EKS-Go-helloworld/blob/master/Codepipeline.PNG)
+
+#### Get information of EKS
+Get pods informaton of  EKS:
+```sh
+$ kubectl get pods
+```
+Get service Information of EKS:
+```sh
+$ kubectl get svc
+```
