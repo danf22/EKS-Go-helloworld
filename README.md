@@ -68,7 +68,7 @@ OAuthToken of your Github repository.
 Deploy the IAM Role using cloud formation and CLI.
 
 ```sh
- aws cloudformation deploy --template-file Iam.yaml --stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
+ aws cloudformation deploy --template-file IAM/Iam.yaml --stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
 ```
 These commands will create the Roles for Codepipeline and Codebuild.
 ### Deploy CodeBuild 
