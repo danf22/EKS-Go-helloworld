@@ -15,7 +15,7 @@ This tutorial is for Deploy a Go APP Hello World in EKS AWS Kubernetes solution.
 We need to do this Getting started https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
 
 ```sh
- eksctl create cluster --name Go --nodegroup-name helloworld --node-type t3.medium --nodes 1 --nodes-min 1 --nodes-max 4 
+ eksctl create cluster --name Go --nodegroup-name helloworld --node-type t3.medium --nodes 1 --nodes-min 1 --nodes-max 4 --zones us-east-1a,us-east-1b
 ```
 
 This command creates a Cloudformation Stack that deploys to a EKS.
@@ -36,11 +36,11 @@ Create an S3 Bucket, replace the xxxxx with some random number
  aws s3api create-bucket --bucket codepipeline-us-east-1-xxxxxx
 ```
 ## Replace variables in :
-replace "*****" /Kubernetes/Go/app.deployment.yml with the url of the ECR repo :
+replace "*****" Kubernetes/Go/app.deployment.yml with the url of the ECR repo :
 ```sh
  *******.dkr.ecr.us-east-1.amazonaws.com/helloworld:latest
 ```
-replace "*****" /Codebuild/CodeBuild.yaml with your access_key_id and secret_access_key:
+replace "*****" Codebuild/CodeBuild.yaml with your access_key_id and secret_access_key:
 ```sh
 Name: "aws_access_key_id"
 Type: "PLAINTEXT"
@@ -49,7 +49,7 @@ Name: "aws_secret_access_key"
 Type: "PLAINTEXT"
 Value: "********"
 ```
-replace "*****" /Codebuild/CodeBuild.yaml with your user for Dockerhub and password
+replace "*****" Codebuild/CodeBuild.yaml with your user for Dockerhub and password
 ```sh
 Name: "dockerhub_username"
 Type: "PLAINTEXT"
@@ -58,7 +58,7 @@ Name: "dockerhub_password"
 Type: "PLAINTEXT"
 Value: "********"
 ```
-replace "*****" /Codepipeline/Codepipeline.yaml with your 
+replace "*****" Codepipeline/Codepipeline.yaml with your 
 OAuthToken of your Github repository.
 ```sh
  OAuthToken: "******"
