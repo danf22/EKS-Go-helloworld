@@ -15,7 +15,7 @@ This tutorial is for Deploy a Go APP Hello World in EKS AWS Kubernetes solution.
 We need to do this Getting started https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
 
 ```sh
-$ eksctl create cluster --name Go --nodegroup-name helloworld --node-type t3.medium --nodes 1 --nodes-min 1 --nodes-max 4 
+ eksctl create cluster --name Go --nodegroup-name helloworld --node-type t3.medium --nodes 1 --nodes-min 1 --nodes-max 4 
 ```
 
 This command creates a Cloudformation Stack that deploys to a EKS.
@@ -27,18 +27,18 @@ We need to Create an ECR repository https://aws.amazon.com/es/ecr/.
 
 
 ```sh
-$ aws ecr  create-repository --repository-name helloworld
+ aws ecr  create-repository --repository-name helloworld
 ```
 ### Create an S3 for Codepipeline
 Create an S3 Bucket, replace the xxxxx with some random number 
 
 ```sh
-$ aws s3api create-bucket --bucket codepipeline-us-east-1-xxxxxx
+ aws s3api create-bucket --bucket codepipeline-us-east-1-xxxxxx
 ```
 ## Replace variables in :
 replace "*****" /Kubernetes/Go/app.deployment.yml with the url of the ECR repo :
 ```sh
-$ *******.dkr.ecr.us-east-1.amazonaws.com/helloworld:latest
+ *******.dkr.ecr.us-east-1.amazonaws.com/helloworld:latest
 ```
 replace "*****" /Codebuild/CodeBuild.yaml with your access_key_id and secret_access_key:
 ```sh
@@ -68,14 +68,14 @@ OAuthToken of your Github repository.
 Deploy the IAM Role using cloud formation and CLI.
 
 ```sh
-$ aws cloudformation deploy --template-file Iam.yaml --stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
+ aws cloudformation deploy --template-file Iam.yaml --stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
 ```
 These commands will create the Roles for Codepipeline and Codebuild.
 ### Deploy CodeBuild 
 Deploy the CodeBuild cloud formation using CLI.
 
 ```sh
-$ aws cloudformation deploy --template-file Codebuild/CodeBuild.yaml--stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
+ aws cloudformation deploy --template-file Codebuild/CodeBuild.yaml--stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
 ```
 These commands will create the Codebuild.
 
@@ -83,7 +83,7 @@ These commands will create the Codebuild.
 Deploy the Codepipeline cloud formation using CLI.
 
 ```sh
-$ aws cloudformation deploy --template-file Codebuild/CodeBuild.yaml--stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
+ aws cloudformation deploy --template-file Codebuild/CodeBuild.yaml--stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
 ```
 These commands will create the Codepipeline.
 
@@ -92,11 +92,11 @@ These commands will create the Codepipeline.
 #### Get information of EKS
 Get pods informaton of  EKS:
 ```sh
-$ kubectl get pods
+ kubectl get pods
 ```
 Get service Information of EKS:
 ```sh
-$ kubectl get svc
+ kubectl get svc
 ```
 This show the ELB information
 ![alt text](https://github.com/danf22/EKS-Go-helloworld/blob/master/ELB.PNG)
