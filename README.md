@@ -40,6 +40,7 @@ replace "*****" Kubernetes/Go/app.deployment.yml with the url of the ECR repo :
 ```sh
  *******.dkr.ecr.us-east-1.amazonaws.com/helloworld:latest
 ```
+push this change to de repo.
 replace "*****" Codebuild/CodeBuild.yaml with your access_key_id and secret_access_key:
 ```sh
 Name: "aws_access_key_id"
