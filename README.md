@@ -70,7 +70,11 @@ S3 Codepipeline.
 ```sh
  codepipeline-${AWS::Region}-*****
 ```
-#### Get information of EKS
+#### Get Deploy  EKS
+Deploy  EKS:
+```sh
+ kubectl create -f Kubernetes/Go/
+```
 Get pods informaton of  EKS:
 ```sh
  kubectl get pods
