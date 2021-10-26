@@ -70,6 +70,18 @@ S3 Codepipeline.
 ```sh
  codepipeline-${AWS::Region}-*****
 ```
+#### Get information of EKS
+Get pods informaton of  EKS:
+```sh
+ kubectl get pods
+```
+Get service Information of EKS:
+```sh
+ kubectl get svc
+```
+This show the ELB information
+![alt text](https://github.com/danf22/EKS-Go-helloworld/blob/master/ELB.PNG)
+
 
 ### Deploy IAM roles
 Deploy the IAM Role using cloud formation and CLI.
@@ -96,15 +108,4 @@ These commands will create the Codepipeline.
 
 ![alt text](https://github.com/danf22/EKS-Go-helloworld/blob/master/Codepipeline.PNG)
 
-#### Get information of EKS
-Get pods informaton of  EKS:
-```sh
- kubectl get pods
-```
-Get service Information of EKS:
-```sh
- kubectl get svc
-```
-This show the ELB information
-![alt text](https://github.com/danf22/EKS-Go-helloworld/blob/master/ELB.PNG)
 
