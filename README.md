@@ -1,4 +1,4 @@
-# Kubernetes GO Hello world EKS
+# Kubernetes Go Hello world EKS
 
 [![N|Solid](https://www.bluematador.com/hs-fs/hubfs/www/Icons/bluematador-aws-EKS.png?width=200&name=bluematador-aws-EKS.png)](https://aws.amazon.com/es/eks/)
 
@@ -6,7 +6,10 @@ This tutorial is for Deploy a Go APP Hello World in EKS AWS Kubernetes solution.
   - AWS Account
   - AWS Keys
   - Docker Hub User
+  - Github
 
+### Fork the repository
+![alt text](https://docs.github.com/assets/images/help/repository/fork_button.jpg)
 ### Creation of a cluster in AWS 
 
 We need to do this Getting started https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html
@@ -84,3 +87,4 @@ $ aws cloudformation deploy --template-file Codebuild/CodeBuild.yaml--stack-name
 ```
 These commands will create the Codepipeline.
 
+![alt text](https://github.com/danf22/EKS-Go-helloworld/blob/master/Codepipeline.PNG)
