@@ -75,7 +75,7 @@ These commands will create the Roles for Codepipeline and Codebuild.
 Deploy the CodeBuild cloud formation using CLI.
 
 ```sh
- aws cloudformation deploy --template-file Codebuild/CodeBuild.yaml --stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
+ aws cloudformation deploy --template-file Codebuild/CodeBuild.yaml --stack-name Codebuild --capabilities CAPABILITY_NAMED_IAM
 ```
 These commands will create the Codebuild.
 
@@ -83,7 +83,7 @@ These commands will create the Codebuild.
 Deploy the Codepipeline cloud formation using CLI.
 
 ```sh
- aws cloudformation deploy --template-file Codepipeline/Codepipeline.yaml --stack-name IAM-Roles --capabilities CAPABILITY_NAMED_IAM
+ aws cloudformation deploy --template-file Codepipeline/Codepipeline.yaml --stack-name Codepipeline --capabilities CAPABILITY_NAMED_IAM
 ```
 These commands will create the Codepipeline.
 
