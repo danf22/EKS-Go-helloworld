@@ -53,8 +53,7 @@ Resources:
                           - aws eks update-kubeconfig --name $AWS_CLUSTER_NAME --region $AWS_DEFAULT_REGION
                           - kubectl config view --minify
                           - kubectl get svc
-                      build:
-                        on-failure: CONTINUE
+                      build:                    
                         commands:
                            - cd Kubernetes
                            - kubectl rollout restart -f Go/app.deployment.yml
