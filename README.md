@@ -86,7 +86,7 @@ Get service Information of EKS:
 This show the ELB information
 ![alt text](https://github.com/danf22/EKS-Go-helloworld/blob/master/ELB.PNG)
 
-#### CI/CD
+### CI/CD
 ### Deploy IAM roles
 Deploy the IAM Role using cloud formation and CLI.
 
