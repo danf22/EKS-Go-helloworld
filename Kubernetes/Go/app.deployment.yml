@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: webapp
-          image:  240996281387.dkr.ecr.us-east-1.amazonaws.com/helloworld:latest
+          image:  *******.dkr.ecr.us-east-1.amazonaws.com/helloworld:latest
           imagePullPolicy: "Always"
           ports:
           - containerPort: 8000
