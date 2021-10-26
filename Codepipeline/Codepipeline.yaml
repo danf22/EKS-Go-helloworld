@@ -9,7 +9,7 @@ Resources:
             Name: "Go-helloworld"
             RoleArn: !Sub "arn:aws:iam::${AWS::AccountId}:role/service-role/AWSCodePipelineServiceRole-${AWS::Region}-Go-helloworld"
             ArtifactStore:
-                Location: !Sub "codepipeline-${AWS::Region}-3707790"
+                Location: !Sub "codepipeline-${AWS::Region}-*****"
                 Type: "S3"
             Stages:
               -
